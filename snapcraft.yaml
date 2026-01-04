@@ -1,0 +1,54 @@
+name: icon-theme-elementary
+build-base: core24
+base: bare
+adopt-info: build-day
+platforms:
+  all:
+    build-on: [amd64]
+    build-for: [all]
+summary: elementary and elementary-xfce icon theme
+description: |
+  A Snap that allows you to use elementary and elementary-xfce icons in Snap apps
+grade: stable
+confinement: strict
+
+slots:
+  icon-themes:
+    interface: content
+    source:
+      read:
+        - $SNAP/usr/share/icons/elementary
+        - $SNAP/usr/share/icons/elementary-xfce
+        - $SNAP/usr/share/icons/elementary-xfce-dark
+        - $SNAP/usr/share/icons/elementary-xfce-darker
+parts:
+  elementary-os-icon-theme:
+    plugin: meson
+    source: https://github.com/elementary/icons.git
+    source-tag: 8.2.0
+    build-packages: &build-packages
+      - meson
+      - librsvg2-bin
+      - x11-apps
+      - gettext
+      - pkgconf
+      - libgdk-pixbuf-2.0-dev
+    meson-parameters:
+      - --prefix=/usr
+    prime:
+      - usr/share/icons/elementary*
+
+  elementary-xfce-icon-theme:
+    after: [elementary-os-icon-theme]
+    plugin: autotools
+    source: https://github.com/shimmerproject/elementary-xfce.git
+    source-tag: v0.22
+    autotools-configure-parameters:
+      - --prefix=/usr
+    prime:
+      - usr/share/icons/elementary*
+
+  build-day:
+    plugin: nil
+    override-build: |
+      craftctl set version=$(date +%Y-%m-%d)
