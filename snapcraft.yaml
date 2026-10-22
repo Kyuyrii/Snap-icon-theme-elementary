@@ -20,12 +20,12 @@ slots:
         - $SNAP/usr/share/icons/elementary
         - $SNAP/usr/share/icons/elementary-xfce
         - $SNAP/usr/share/icons/elementary-xfce-dark
-        - $SNAP/usr/share/icons/elementary-xfce-darker
+        - $SNAP/usr/share/icons/elementary-xfce-hidpi
 parts:
   elementary-os-icon-theme:
     plugin: meson
     source: https://github.com/elementary/icons.git
-    source-tag: 8.2.0
+    source-tag: 9.0.0
     build-packages: &build-packages
       - meson
       - librsvg2-bin
@@ -42,7 +42,7 @@ parts:
     after: [elementary-os-icon-theme]
     plugin: autotools
     source: https://github.com/shimmerproject/elementary-xfce.git
-    source-tag: v0.22
+    source-tag: v0.23
     autotools-configure-parameters:
       - --prefix=/usr
     prime:
